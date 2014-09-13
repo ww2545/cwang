@@ -9,6 +9,7 @@ namespace DSHW1CWANG
 {
 	class MainClass
 	{
+
 		public static void Main (string[] args)
 		{
 			//load txt to a list
@@ -25,10 +26,33 @@ namespace DSHW1CWANG
 			}
 			file.Close ();
 
+			//output txt file
+
 			foreach (string s in order) {
 				Console.Write(s);
 			}
-			
+			Console.WriteLine ();
+			//build structure
+			for (int i = 0; i < order.Count; i++) 
+			{
+				if (i - 1 < 0) {
+					Console.WriteLine (order [i] + ": ");
+				} else if (order [i - 1] == "->") 
+				{
+					if (i - 3 < 0) {
+						Console.WriteLine (order [i] + ": " + order [i - 2]);
+					} else if (i - 3 > 0 && order [i - 3] != "||") {
+						Console.WriteLine (order [i] + ": " + order [i - 2]);
+					} else {
+						Console.WriteLine (order [i] + ": "+ order[i-4]+ ", " + order [i - 2]);
+					}
+
+				} else if (order [i - 1] == "||" && i - 4 >= 0) {
+					Console.WriteLine (order [i] + ": " + order [i - 4]);
+				} else if (order [i - 1] == "||" && i - 4 < 0) {
+					Console.WriteLine (order [i] + ": ");
+				} 
+			}
 
 
 			// Create a task and supply a user delegate by using a lambda expression. 
