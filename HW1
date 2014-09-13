@@ -29,10 +29,10 @@ namespace DSHW1CWANG
 		{
 			//list out tasks
 
-			Task T1 = new Task (() => System.Threading.Thread.Sleep (2000));//sleep for 2 sec
-			Task T2 = new Task (() => System.Threading.Thread.Sleep (5000)); //sleep for 5 sec
+			Task T1 = new Task (() => compute(1,10));//sleep for 2 sec
+			Task T2 = new Task (() => compute (1, 38)); //sleep for 5 sec
 			Task T3 = new Task (() => compute (1, 50)); //sum 1 to 50
-			Task T4 = new Task (() => System.Threading.Thread.Sleep (4000)); //sleep for 4 sec
+			Task T4 = new Task (() => compute (1, 10000000)); //sleep for 4 sec
 			Task T5 = new Task (() => compute (1, 10000)); //sum 1 to 10,000
 
 			if (s == "T1") {
@@ -44,7 +44,7 @@ namespace DSHW1CWANG
 				if (T2.Status != TaskStatus.RanToCompletion) {
 					T2.Start ();
 					T2.Wait ();
-				}
+				} 
 			}
 			else if (s == "T3") {
 				if (T3.Status != TaskStatus.RanToCompletion) {
@@ -96,22 +96,27 @@ namespace DSHW1CWANG
 				if (i - 1 < 0) {
 					Console.WriteLine (order [i] + ": ");
 					check (order [i]);
-				} else if (order [i - 1] == "->") 
-				{
+				} else if (order [i - 1] == "->") {
 					if (i - 3 < 0) {
 						Console.WriteLine (order [i] + ": " + order [i - 2]);
+						check (order [i - 2]);
 					} else if (i - 3 > 0 && order [i - 3] != "||") {
 						Console.WriteLine (order [i] + ": " + order [i - 2]);
+						check (order [i - 2]);
 					} else {
-						Console.WriteLine (order [i] + ": "+ order[i-4]+ ", " + order [i - 2]);
+						Console.WriteLine (order [i] + ": " + order [i - 4] + ", " + order [i - 2]);
+						check (order [i - 4]);
+						check (order [i - 2]);
 					}
 
 				} else if (order [i - 1] == "||" && i - 4 >= 0) {
 					Console.WriteLine (order [i] + ": " + order [i - 4]);
+					check (order [i - 4]);
 				} else if (order [i - 1] == "||" && i - 4 < 0) {
 					Console.WriteLine (order [i] + ": ");
 				} 
 			}
+			check (order [order.Count - 1]);
 
 		}
 	}
