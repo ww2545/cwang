@@ -10,6 +10,8 @@ namespace DSHW1CWANG
 	class MainClass
 	{
 
+
+		//computation;
 		private static void compute(int n, int k)
 		{
 			long sum;
@@ -21,6 +23,49 @@ namespace DSHW1CWANG
 			Console.WriteLine ("The sum from "+ n + " to " + k+ " is: " + sum);
 
 		}
+
+		//check and run task
+		private static void check(string s)
+		{
+			//list out tasks
+
+			Task T1 = new Task (() => System.Threading.Thread.Sleep (2000));//sleep for 2 sec
+			Task T2 = new Task (() => System.Threading.Thread.Sleep (5000)); //sleep for 5 sec
+			Task T3 = new Task (() => compute (1, 50)); //sum 1 to 50
+			Task T4 = new Task (() => System.Threading.Thread.Sleep (4000)); //sleep for 4 sec
+			Task T5 = new Task (() => compute (1, 10000)); //sum 1 to 10,000
+
+			if (s == "T1") {
+				if (T1.Status != TaskStatus.RanToCompletion) {
+					T1.Start ();
+					T1.Wait ();
+				}
+			} else if (s == "T2") {
+				if (T2.Status != TaskStatus.RanToCompletion) {
+					T2.Start ();
+					T2.Wait ();
+				}
+			}
+			else if (s == "T3") {
+				if (T3.Status != TaskStatus.RanToCompletion) {
+					T3.Start ();
+					T3.Wait ();
+				}
+			}
+			else if (s == "T4") {
+				if (T4.Status != TaskStatus.RanToCompletion) {
+					T4.Start ();
+					T4.Wait ();
+				}
+			}
+			else if (s == "T5") {
+				if (T5.Status != TaskStatus.RanToCompletion) {
+					T5.Start ();
+					T5.Wait ();
+				}
+			}
+		}
+
 		public static void Main (string[] args)
 		{
 			//load txt to a list
@@ -44,40 +89,13 @@ namespace DSHW1CWANG
 			}
 			Console.WriteLine ();
 
-			//list out tasks
-			Task task1 = new Task( () => System.Threading.Thread.Sleep(2000));//sleep for 2 sec
-			Task task2 = new Task( () => System.Threading.Thread.Sleep(5000)); //sleep for 5 sec
-			Task task3 = new Task( () => compute(1,50)); //sum 1 to 50
-			Task task4 = new Task( () => System.Threading.Thread.Sleep(4000)); //sleep for 4 sec
-			Task task5 = new Task( () => compute(1,10000)); //sum 1 to 10,000
-
-			task1.Start ();
-			task1.Wait ();
-			Console.WriteLine ("task complete");
-
-			task2.Start ();
-			task2.Wait ();
-			Console.WriteLine ("task complete");
-
-			task3.Start ();
-			task3.Wait ();
-			Console.WriteLine ("task complete");
-
-			task4.Start ();
-			task4.Wait ();
-			Console.WriteLine ("task complete");
-
-			task5.Start ();
-			task5.Wait ();
-			Console.WriteLine ("task complete");
-
-
-
+		
 			//build structure
 			for (int i = 0; i < order.Count; i++) 
 			{
 				if (i - 1 < 0) {
 					Console.WriteLine (order [i] + ": ");
+					check (order [i]);
 				} else if (order [i - 1] == "->") 
 				{
 					if (i - 3 < 0) {
@@ -94,8 +112,6 @@ namespace DSHW1CWANG
 					Console.WriteLine (order [i] + ": ");
 				} 
 			}
-
-
 
 		}
 	}
