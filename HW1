@@ -10,13 +10,12 @@ namespace DSHW1CWANG
 	class MainClass
 	{
 
-
 		//computation;
 		private static void compute(int n, int k)
 		{
 			long sum;
 			sum = 0;
-			for (long i = 1; i <= k; i++) 
+			for (long i = n; i <= k; i++) 
 			{
 				sum = sum + i;
 			}
@@ -132,11 +131,13 @@ namespace DSHW1CWANG
 					}
 
 				} 
-				else if (order [i - 1] == "||" && i - 4 >= 0) {
+					else if (order [i - 1] == "||" && i - 4 >= 0) 
+				{
 					Console.WriteLine (order [i] + ": " + order [i - 4]);
 					Console.WriteLine ();
 				} 
-				else if (order [i - 1] == "||" && i - 4 < 0) {
+					else if (order [i - 1] == "||" && i - 4 < 0) 
+				{
 					Console.WriteLine (order [i] + ": ");
 					Console.WriteLine ();
 				} 
