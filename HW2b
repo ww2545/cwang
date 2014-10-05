@@ -1,0 +1,93 @@
+using System;
+using System.IO;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Globalization;
+
+namespace HW2
+{
+	public class Message
+	{
+
+		public int integer;
+		public static Dictionary <string, int> parameters=new Dictionary<string,int>();
+
+		public Message()
+		{
+
+		}
+		public void setIntParam(string key, int value)
+		{
+			parameters.Add (key,value);
+		}
+		public int getIntParam(string key)
+		{
+			int value;
+			parameters.TryGetValue(key, out value);
+			return value;
+		}
+
+		public static Message GetA(Dictionary<string,Message> incoming)
+		{
+			Message a = new Message ();
+			a.setIntParam ("value1", 25);
+			return a;
+		}
+
+		public static Message GetB(Dictionary<string, Message> incoming)
+		{
+			Message b = new Message ();
+			b.setIntParam ("value2", 30);
+			return b;
+		}
+		public static Message Add(Dictionary<string,Message> incoming)
+		{
+			Message left = new Message ();
+			Message right = new Message ();
+			int Result = left.getIntParam ("value1") + right.getIntParam ("value2");
+			Message result = new Message ();
+			result.setIntParam ("result", Result);
+			return result;
+		}
+		public static Message Print(Dictionary<string,Message >incoming)
+		{
+			Message result = new Message ();;
+			Console.WriteLine("result = " + result.getIntParam("result"));
+			return new Message();
+		}
+
+	}
+
+
+	class MainClass
+	{
+
+		public static void Main ()
+		{
+			Console.WriteLine ("T1||T2->T3->T4");
+			Console.WriteLine ("T1: GetA");
+			Console.WriteLine ("T2: GetB");
+			Console.WriteLine("T3: Add");
+			Console.WriteLine ("T4: Print Result");
+			System.Threading.Thread.Sleep (2000);
+
+
+			Dictionary<string, Message> a = new Dictionary<string, Message> ();
+
+			Task T1=new Task(()=>Message.GetA (a));
+			Task T2 = new Task (() => Message.GetB (a));
+			Task T3 = new Task (() => Message.Add (a));
+			Task T4 = new Task (() => Message.Print (a));
+
+			T1.Start ();
+			T2.Start ();
+			Task.WaitAll (T1, T2);
+			T3.Start ();
+			T3.Wait ();
+			T4.Start ();
+			T4.Wait ();
+		}
+
+	}
+}
