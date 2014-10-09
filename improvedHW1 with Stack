@@ -1,0 +1,116 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.IO;
+
+
+namespace DSHW1CWANG
+{
+	class MainClass
+	{
+
+		//computation;
+		private static void compute(int n, int k)
+		{
+			long sum;
+			sum = 0;
+			for (long i = n; i <= k; i++) 
+			{
+				sum = sum + i;
+			}
+			Console.WriteLine ("The sum from "+ n + " to " + k+ " is: " + sum);
+
+		}
+		public static Task calltask(string name)
+		{
+
+			//list out tasks
+			Task T1 = new Task (() => {System.Threading.Thread.Sleep(2000); 
+				Console.WriteLine("Task1 Completed: sleep for 2 secs");
+				Console.WriteLine();});//sleep for 2 sec
+			Task T2 = new Task (() => {compute (1, 38);
+				Console.WriteLine("Task2 Completed");
+				Console.WriteLine();}); //sum 1 to 38
+			Task T3 = new Task (() => {System.Threading.Thread.Sleep(5000);
+				Console.WriteLine("Task3 Completed: sleep for 5 secs");
+				Console.WriteLine();}); //sleep for 5 sec
+			Task T4 = new Task (() => {compute (1, 10000000);
+				Console.WriteLine("Task4 Completed");
+				Console.WriteLine();}); //sum 1 to 10,000,000
+			Task T5 = new Task (() => {System.Threading.Thread.Sleep(3000);
+				Console.WriteLine("Task5 Completed: sleep for 3 secs");
+				Console.WriteLine();}); //sleep for 3 sec
+
+			if (name == "T1")
+				return T1;
+			else if (name == "T2")
+				return T2;
+			else if (name == "T3")
+				return T3;
+			else if (name == "T4")
+				return T4;
+			else if (name == "T5")
+				return T5;
+			else
+				return new Task(()=>Console.WriteLine("Task does not exist"));
+		}
+		public static void runtask(Task name)
+		{
+			name.Start ();
+			name.Wait ();
+		}
+		public static Task newtask(string name, string name1)
+		{
+			Task New=new Task(()=>Parallel.Invoke(()=>calltask(name),()=>calltask(name1)));
+			return New;
+		}
+
+
+		public static void Main (string[] args)
+		{
+			//load txt to a list
+			List<string> order = new List <string>();
+			StreamReader file = new StreamReader("1.txt");
+			string input = file.ReadLine ();
+
+			while (input != null) {
+				string[] value = input.Split (' ');
+				for (int i = 0; i < value.Length; i++) {
+					order.Add (value [i]);
+					input = file.ReadLine ();
+				}
+			}
+
+			file.Close ();
+
+			//output txt file
+
+			foreach (string s in order) {
+				Console.Write(s);
+			}
+			Console.WriteLine ();
+			Console.WriteLine ();
+
+			Stack<Task> stack = new Stack<Task> ();
+			for (int i = order.Count-1; i >=0; i--) 
+			{
+				if (order [i] != "->" && order [i] != "||") {
+					stack.Push (calltask (order [i]));
+				} 
+				else if (order [i] != "->" && order [i] != "||" && order [i - 1] == "||") 
+				{
+					stack.Push(newtask(order[i],order[i-2]));
+				}
+					
+			}
+
+			for (int i =stack.Count; i>0; i--) 
+			{
+				runtask(stack.Pop());
+			}
+
+
+		}
+	}
+}
